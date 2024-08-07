@@ -3,23 +3,31 @@ import Tile from './tile.js';
 export default {
   template: `
     <div class="board">
-      <Tile marker="x" :index="0" @click="alert(0)" />
-      <Tile marker="o" :index="1" @click="alert(1)" />
-      <Tile marker="x" :index="2" @click="alert(2)" />
-      <Tile marker="o" :index="3" @click="alert(3)" />
-      <Tile marker="x" :index="4" @click="alert(4)" />
-      <Tile marker="o" :index="5" @click="alert(5)" />
-      <Tile marker="x" :index="6" @click="alert(6)" />
-      <Tile marker="o" :index="7" @click="alert(7)" />
-      <Tile marker="x" :index="8" @click="alert(8)" />
+      <Tile 
+        v-for="(tile, index) in tiles" 
+        :key="index" 
+        :marker="tile.marker" 
+        :index="index" 
+        @click="handleClick(index)" 
+      />
     </div>
   `,
+  computed: {
+    tiles() {
+      return this.$store.state.tiles;
+    },
+    isPaused() {
+      return this.$store.state.message !== '';
+    }
+  },
   components: {
     Tile,
   },
   methods: {
-    alert: (index) => {
-      window.alert(`Clicked on tile ${index}`);
+    handleClick(index) {
+      if (this.tiles[index].marker === '' && !this.isPaused) {
+        this.$store.dispatch('updateTile', index);
+      }
     },
   }
 }
