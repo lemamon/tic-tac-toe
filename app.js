@@ -1,5 +1,6 @@
-import Game from './game.js';
+import Game from "./game.js";
+import store from "./store.js";
 
 const { createApp } = Vue;
 
-createApp(Game).mount('#app')
+createApp(Game).use(store).mount("#app");
